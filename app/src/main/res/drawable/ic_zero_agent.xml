@@ -1,0 +1,7 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#F7F7F4" android:pathData="M0,0h108v108h-108z"/>
+    <!-- An intentionally off-centre, interrupted zero: minimal, monochrome, a little strange. -->
+    <path android:fillColor="#050505" android:pathData="M17,20L73,20L91,38L91,72L73,90L17,90L17,73L33,73L33,76L66,76L77,65L77,45L66,34L33,34L33,57L17,57z"/>
+    <path android:fillColor="#050505" android:pathData="M48,47L62,47L62,61L48,61z"/>
+    <path android:fillColor="#F7F7F4" android:pathData="M33,34L48,34L48,47L33,47z"/>
+</vector>
