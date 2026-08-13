@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ARC REACTOR — a scroll-driven, depth-based monochrome experience. Powered by anime.js + Three.js." />
+  <title>ARC REACTOR // Stark Industries</title>
+
+  <!-- Sci-fi typefaces (self-hosted) -->
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ FIXED 3D CANVAS (depth layer 0) ============ -->
+  <canvas id="reactor" aria-hidden="true"></canvas>
+
+  <!-- Ambient background grid / crosshair (CSS depth) -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-vignette" aria-hidden="true"></div>
+
+  <!-- ============ HUD OVERLAY (fixed) ============ -->
+  <div class="hud" aria-hidden="true">
+    <span class="hud-corner tl"></span>
+    <span class="hud-corner tr"></span>
+    <span class="hud-corner bl"></span>
+    <span class="hud-corner br"></span>
+
+    <div class="hud-progress">
+      <span class="hud-progress-label">SCROLL // 000</span>
+      <span class="hud-progress-track"><span class="hud-progress-bar"></span></span>
+    </div>
+
+    <div class="hud-nav">
+      <a href="#vision" data-target="0"></a>
+      <a href="#specs" data-target="1"></a>
+      <a href="#anatomy" data-target="2"></a>
+      <a href="#timeline" data-target="3"></a>
+      <a href="#future" data-target="4"></a>
+    </div>
+
+    <div class="hud-coords">
+      <span class="hud-coord">LAT 40.7128° N</span>
+      <span class="hud-coord">LON 74.0060° W</span>
+      <span class="hud-coord">ALT 0.00 m</span>
+    </div>
+  </div>
+
+  <!-- ============ NAV BAR ============ -->
+  <header class="nav" id="nav">
+    <a class="nav-logo" href="#top" data-anim="reveal">
+      <span class="nav-logo-mark">◤</span>
+      <span class="nav-logo-text">STARK<span class="thin">/</span>INDUSTRIES</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#vision" data-anim="reveal">VISION</a>
+      <a href="#specs" data-anim="reveal">SPECS</a>
+      <a href="#anatomy" data-anim="reveal">ANATOMY</a>
+      <a href="#timeline" data-anim="reveal">TIMELINE</a>
+      <a href="#future" data-anim="reveal" class="nav-cta">INITIATE</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ 00 // HERO ============ -->
+    <section class="section hero" id="hero" data-section="hero">
+      <div class="hero-inner">
+        <p class="kicker" data-anim="rise">MARK IV // PALLADIUM ARC REACTOR</p>
+        <h1 class="hero-title" aria-label="ARC REACTOR">
+          <span class="word">ARC</span>
+          <span class="word">REACTOR</span>
+        </h1>
+        <div class="hero-rule" data-anim="grow"></div>
+        <p class="hero-sub" data-anim="rise">A self-sustaining clean energy source.<br />A heartbeat of light in the dark.</p>
+        <p class="hero-mono" data-anim="rise">PWR&nbsp;100% &nbsp;//&nbsp; CORE&nbsp;STABLE &nbsp;//&nbsp; OUTPUT&nbsp;3.2&nbsp;GJ/s</p>
+      </div>
+      <div class="scroll-cue" data-anim="cue">
+        <span class="scroll-cue-line"></span>
+        <span class="scroll-cue-text">SCROLL TO INITIATE</span>
+      </div>
+    </section>
+
+    <!-- ============ 01 // VISION ============ -->
+    <section class="section vision" id="vision" data-section="vision">
+      <div class="section-head" data-anim="head">
+        <span class="index">01</span>
+        <span class="index-label">// THE VISION</span>
+      </div>
+      <h2 class="statement" data-statement>
+        A beacon of <em class="stroke">clean energy</em> in the palm of your hand — a star, contained.
+      </h2>
+      <div class="vision-cols">
+        <p class="body-text" data-anim="rise">
+          The Arc Reactor was never just a power source. It is the proof that
+          an impossible idea — infinite energy, zero cost to the world — can be
+          forged from nothing but will.
+        </p>
+        <p class="body-text grey" data-anim="rise">
+          No combustion. No fallout. No emissions. Only a closed, self-sustaining
+          fusion field, spinning at the center of a magnetic cage — quiet, cold,
+          and impossibly bright.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 02 // SPECIFICATIONS ============ -->
+    <section class="section specs" id="specs" data-section="specs">
+      <div class="section-head" data-anim="head">
+        <span class="index">02</span>
+        <span class="index-label">// SPECIFICATIONS</span>
+      </div>
+
+      <div class="spec-grid">
+        <article class="spec" data-anim="rise" data-counter data-value="3.2" data-decimals="1" data-suffix=" GJ/s">
+          <span class="spec-value" data-target>0.0</span>
+          <span class="spec-label">Instantaneous Power Output</span>
+        </article>
+        <article class="spec" data-anim="rise" data-counter data-value="10" data-suffix="">
+          <span class="spec-value" data-target>0</span>
+          <span class="spec-label">Primary Magnetic Coils</span>
+        </article>
+        <article class="spec" data-anim="rise" data-counter data-value="99.97" data-decimals="2" data-suffix=" %">
+          <span class="spec-value" data-target>0.00</span>
+          <span class="spec-label">Energy Conversion Efficiency</span>
+        </article>
+        <article class="spec" data-anim="rise" data-counter data-value="7.5" data-decimals="1" data-suffix=" cm">
+          <span class="spec-value" data-target>0.0</span>
+          <span class="spec-label">Reactor Core Diameter</span>
+        </article>
+        <article class="spec" data-anim="rise" data-counter data-value="0" data-suffix="">
+          <span class="spec-value" data-target>0</span>
+          <span class="spec-label">Toxic Emissions</span>
+        </article>
+        <article class="spec spec-infinity" data-anim="rise">
+          <span class="spec-value">&infin;</span>
+          <span class="spec-label">Operational Service Life</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 03 // EXPLODED ASSEMBLY ============ -->
+    <section class="section anatomy" id="anatomy" data-section="anatomy">
+      <div class="section-head" data-anim="head">
+        <span class="index">03</span>
+        <span class="index-label">// EXPLODED ASSEMBLY</span>
+      </div>
+
+      <p class="explode-intro" data-anim="rise">
+        Keep scrolling — the reactor disassembles itself, component by component.
+      </p>
+
+      <div class="explode-caption">
+        <span class="cap-top">
+          <span class="cap-num" id="explode-caption-num">00</span>
+          <span class="cap-name" id="explode-caption-name">FULLY ASSEMBLED</span>
+        </span>
+        <span class="cap-desc" id="explode-caption-desc">All components locked — reactor stable at 100% output.</span>
+        <span class="cap-track"><span class="cap-fill" id="explode-assembly-fill"></span></span>
+      </div>
+    </section>
+
+    <!-- ============ 04 // TIMELINE ============ -->
+    <section class="section timeline" id="timeline" data-section="timeline">
+      <div class="section-head" data-anim="head">
+        <span class="index">04</span>
+        <span class="index-label">// TIMELINE</span>
+      </div>
+
+      <div class="timeline-track">
+        <div class="tline-item" data-anim="tline">
+          <span class="tline-year">2008</span>
+          <div class="tline-body">
+            <h3 class="tline-title">Mk I — The Prototype</h3>
+            <p class="tline-desc">Born in a cave from scrap, wire and desperation.</p>
+          </div>
+        </div>
+        <div class="tline-item" data-anim="tline">
+          <span class="tline-year">2010</span>
+          <div class="tline-body">
+            <h3 class="tline-title">Mk II — Refinement</h3>
+            <p class="tline-desc">A stable palladium core. Integrated into the suit.</p>
+          </div>
+        </div>
+        <div class="tline-item" data-anim="tline">
+          <span class="tline-year">2012</span>
+          <div class="tline-body">
+            <h3 class="tline-title">Miniaturization</h3>
+            <p class="tline-desc">Clean energy reduced to the palm of a hand.</p>
+          </div>
+        </div>
+        <div class="tline-item" data-anim="tline">
+          <span class="tline-year">2018</span>
+          <div class="tline-body">
+            <h3 class="tline-title">Nanotech Matrix</h3>
+            <p class="tline-desc">Energy woven directly into the armor itself.</p>
+          </div>
+        </div>
+        <div class="tline-item" data-anim="tline">
+          <span class="tline-year">2026</span>
+          <div class="tline-body">
+            <h3 class="tline-title">The Singularity</h3>
+            <p class="tline-desc">One reactor. Infinite potential.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 // FUTURE / FINALE ============ -->
+    <section class="section future" id="future" data-section="future">
+      <div class="section-head" data-anim="head">
+        <span class="index">05</span>
+        <span class="index-label">// THE FUTURE</span>
+      </div>
+
+      <h2 class="final-statement" data-statement>
+        Proof that the future is powered by <em class="stroke">you</em>.
+      </h2>
+
+      <button class="cta" data-anim="cta">
+        <span class="cta-ring"></span>
+        <span class="cta-text">INITIATE SEQUENCE</span>
+      </button>
+      <p class="cta-mono" data-anim="rise">AWAITING OPERATOR INPUT&nbsp;. . .</p>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="footer">
+    <div class="footer-row">
+      <span class="footer-brand">STARK<span>/</span>INDUSTRIES</span>
+      <span class="footer-tag">ARC REACTOR DIVISION</span>
+    </div>
+    <div class="footer-row footer-meta">
+      <span>© 2026 STARK INDUSTRIES</span>
+      <span>DESIGNED IN MONOCHROME</span>
+      <span>POWERED BY anime.js + three.js</span>
+    </div>
+  </footer>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/anime.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
