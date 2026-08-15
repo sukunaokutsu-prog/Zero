@@ -65,6 +65,11 @@ class Config:
     gen_prompt: str = "CHAPTER I."
     seed: int = 1337
 
+    # ---- long-run / resume / progress ----
+    target_tokens: int = 1_000_000_000   # progress target ("1 billion tokens")
+    resume_from: str = ""                # path to a resume checkpoint (or "")
+    checkpoint_interval: int = 100       # steps between resume checkpoints
+
     # ---- runtime ----
     name: str = "run"
     out_dir: str = "results"

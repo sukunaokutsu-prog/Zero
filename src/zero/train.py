@@ -73,13 +73,31 @@ def train(cfg: Config) -> dict:
     # ---- logging ----
     run_dir = os.path.join(cfg.out_dir, cfg.name)
     os.makedirs(run_dir, exist_ok=True)
-    logf = open(os.path.join(run_dir, "train.log"), "w")
-    genf = open(os.path.join(run_dir, "generations.txt"), "w")
+    logf = open(os.path.join(run_dir, "train.log"), "a")
+    genf = open(os.path.join(run_dir, "generations.txt"), "a")
 
     def emit(msg):
         print(msg, flush=True)
         logf.write(msg + "\n")
         logf.flush()
+
+    tokens_per_step = cfg.batch_size * cfg.block_size
+    total_tokens = 0
+    total_flops = 0.0
+    start_step = 0
+    history = []
+    resume_path = os.path.join(run_dir, "latest.pt")
+
+    # ---- resume ----
+    if cfg.resume_from and os.path.exists(cfg.resume_from):
+        ck = torch.load(cfg.resume_from, map_location=device, weights_only=False)
+        model.load_state_dict(ck["model"])
+        optimizer.load_state_dict(ck["optimizer"])
+        start_step = ck["step"]
+        history = ck.get("history", [])
+        total_tokens = ck.get("total_tokens", start_step * tokens_per_step)
+        total_flops = ck.get("total_flops", 0.0)
+        emit(f"[resume] restored step {start_step} from {cfg.resume_from}")
 
     emit("=" * 78)
     emit(f"Zero FPFF-Z2G run: {cfg.name}")
@@ -89,16 +107,13 @@ def train(cfg: Config) -> dict:
     emit(f"vocab: {cfg.vocab_size}  toy_tokens: {toy.n_train:,}  real_tokens: {real.n_train:,}")
     emit(f"Phase A (toy, {cfg.n_layer} layers) -> step {cfg.phase_b_step}; "
          f"Phase B (real, {cfg.n_layer * 2} layers) -> step {cfg.max_steps}")
+    emit(f"target: {cfg.target_tokens:,} tokens (progress tracked live)")
     emit("=" * 78)
 
-    tokens_per_step = cfg.batch_size * cfg.block_size
-    total_tokens = 0
-    total_flops = 0.0
     t_start = time.time()
     best_val = float("inf")
-    history = []
 
-    for step in range(1, cfg.max_steps + 1):
+    for step in range(start_step + 1, cfg.max_steps + 1):
         # ---- Z2G Phase B: depth doubling + dataset switch ----
         if step == cfg.phase_b_step:
             model.double_depth()
@@ -134,12 +149,16 @@ def train(cfg: Config) -> dict:
             pos, neg = _pos_neg_embeddings(model, x)
             model.fpff_hebbian(pos, neg)
 
-        # ---- logging ----
+        # ---- logging (with live progress toward target tokens) ----
         if step % cfg.log_interval == 0 or step == 1:
             elapsed = time.time() - t_start
-            emit(f"step {step:>4}/{cfg.max_steps} | loss {loss.item():.4f} | "
-                 f"lr {lr:.2e} | tok/s {total_tokens / max(elapsed, 1e-9):.0f} | "
-                 f"flops {total_flops:.2e} | t {elapsed:.0f}s | phase "
+            tok_s = total_tokens / max(elapsed, 1e-9)
+            pct = 100.0 * total_tokens / max(1, cfg.target_tokens)
+            eta_h = max(0.0, (cfg.target_tokens - total_tokens) / max(tok_s, 1e-9)) / 3600.0
+            emit(f"step {step:>5}/{cfg.max_steps} | loss {loss.item():.4f} | "
+                 f"lr {lr:.2e} | tok/s {tok_s:.0f} | "
+                 f"tok {total_tokens:,}/{cfg.target_tokens:,} ({pct:.4f}%) | "
+                 f"ETA {eta_h:.1f}h | t {elapsed:.0f}s | phase "
                  f"{'A' if step < cfg.phase_b_step else 'B'}")
 
         # ---- evaluation (always on the real corpus — the target) ----
@@ -149,7 +168,7 @@ def train(cfg: Config) -> dict:
             history.append({"step": step, "train_loss": losses["train"],
                             "val_loss": val, "val_ppl": math.exp(val),
                             "total_flops": total_flops, "n_params": model.n_params(),
-                            "n_layer": cfg.n_layer})
+                            "n_layer": cfg.n_layer, "total_tokens": total_tokens})
             emit(f"[eval] step {step:>4} | train {losses['train']:.4f} | val {val:.4f} "
                  f"| ppl {math.exp(val):.2f}")
             if val < best_val:
@@ -187,10 +206,22 @@ def train(cfg: Config) -> dict:
             genf.flush()
             emit(f"[gen] step {step}: wrote {cfg.gen_max_tokens} tokens")
 
+        # ---- resume checkpoint (model + optimizer + counters) ----
+        if step % cfg.checkpoint_interval == 0:
+            torch.save({"cfg": cfg.__dict__, "model": model.state_dict(),
+                        "optimizer": optimizer.state_dict(), "step": step,
+                        "history": history, "total_tokens": total_tokens,
+                        "total_flops": total_flops}, resume_path)
+            emit(f"[ckpt] step {step}: saved resume checkpoint")
+
     elapsed = time.time() - t_start
     final_losses = estimate_loss(model, real, cfg)
     save_checkpoint(model, tokenizer, cfg, os.path.join(run_dir, "final.pt"),
                     final_losses["val"], cfg.max_steps)
+    torch.save({"cfg": cfg.__dict__, "model": model.state_dict(),
+                "optimizer": optimizer.state_dict(), "step": cfg.max_steps,
+                "history": history, "total_tokens": total_tokens,
+                "total_flops": total_flops}, resume_path)
 
     results = {
         "name": cfg.name, "final_train_loss": round(final_losses["train"], 5),
@@ -200,6 +231,7 @@ def train(cfg: Config) -> dict:
         "bits_per_char": round(final_losses["val"] / math.log(2.0), 5),
         "steps": cfg.max_steps, "n_layer_final": cfg.n_layer,
         "n_params": model.n_params(), "n_params_phaseA": model.n_params() // 2,
+        "total_tokens": total_tokens, "target_tokens": cfg.target_tokens,
         "total_train_flops": total_flops, "total_seconds": round(elapsed, 1),
         "tokens_per_sec": round(total_tokens / max(elapsed, 1e-9), 1),
         "history": history,
@@ -207,7 +239,8 @@ def train(cfg: Config) -> dict:
     with open(os.path.join(run_dir, "summary.json"), "w") as f:
         json.dump(results, f, indent=2)
     emit(f"[done] val {final_losses['val']:.4f} | ppl {math.exp(final_losses['val']):.2f} "
-         f"| {elapsed:.0f}s | {total_tokens / max(elapsed, 1e-9):.0f} tok/s")
+         f"| {elapsed:.0f}s | {total_tokens:,} tokens "
+         f"({100 * total_tokens / cfg.target_tokens:.4f}% of target)")
     logf.close()
     genf.close()
     return results

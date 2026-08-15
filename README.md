@@ -34,10 +34,9 @@ Fits and trains in ~1 GB of RAM on 2 vCPU.
 
 ```bash
 bash scripts/setup.sh                                  # venv + CPU torch
-.venv/bin/python scripts/fetch_corpus.py --max-mb 32   # 36 novels (+ TinyShakespeare)
+.venv/bin/python scripts/fetch_corpus.py --max-mb 110  # 144 books -> 96MB corpus
 .venv/bin/python scripts/prep_data.py                  # BPE + mmap token files
-PYTHONPATH=src .venv/bin/python -c \
-  "from zero.methods import fifty_m; from zero.train import train; train(fifty_m(200))"
+PYTHONPATH=src .venv/bin/python scripts/launch.py --steps 6000   # 50M model, long run
 ```
 
 Then:
@@ -46,9 +45,22 @@ Then:
 PYTHONPATH=src .venv/bin/python scripts/demo.py --ckpt results/fifty-m/best.pt
 ```
 
-Outputs: `results/fifty-m/train.log` (per-step loss/lr/tok/s/FLOPs),
-`results/fifty-m/generations.txt` (**text generated live every 50 steps**),
-`results/fifty-m/best.pt` (checkpoint, saved locally).
+Outputs: `results/fifty-m/train.log` (per-step loss/lr/tok/s + **live progress
+toward 1B tokens**), `results/fifty-m/generations.txt` (text generated every 50
+steps), `results/fifty-m/latest.pt` (resume checkpoint, auto-restored on re-run).
+
+---
+
+## The 1-billion-token target (honest math)
+
+| hardware | 50M-model throughput | 1B tokens |
+|---|---|---|
+| this sandbox (2 vCPU) | ~525 tok/s | ~22 days |
+| 1× A100 (bf16, batch 64) | ~1M tok/s | ~17 min |
+
+The long run here trains *toward* 1B tokens with a live tracker + resume; it will
+report the fraction reached. To actually finish 1B tokens, run the identical
+pipeline on a GPU (see `paper/method.md` §6) — only the device changes.
 
 ---
 

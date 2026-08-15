@@ -27,7 +27,7 @@ def fifty_m(max_steps: int = 200, name: str = "fifty-m") -> Config:
     cfg.batch_size = 16
 
     cfg.growth = "net2net"
-    cfg.phase_b_step = max(1, max_steps // 3)
+    cfg.phase_b_step = min(200, max(1, max_steps // 5))
 
     cfg.fpff = True
     cfg.fpff_loops = 6
@@ -45,13 +45,15 @@ def fifty_m(max_steps: int = 200, name: str = "fifty-m") -> Config:
     cfg.lr = 3e-3
     cfg.weight_decay = 0.1
     cfg.grad_clip = 1.0
-    cfg.eval_interval = 40
-    cfg.eval_iters = 10
+    cfg.eval_interval = 50
+    cfg.eval_iters = 8
     cfg.log_interval = 5
     cfg.gen_interval = 50
     cfg.gen_max_tokens = 200
     cfg.gen_prompt = "CHAPTER I."
     cfg.seed = 1337
+    cfg.target_tokens = 1_000_000_000
+    cfg.checkpoint_interval = 100
     return cfg
 
 

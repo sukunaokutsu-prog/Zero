@@ -148,7 +148,47 @@ PYTHONPATH=src .venv/bin/python scripts/demo.py --ckpt results/fifty-m/best.pt
 
 ---
 
-## 6. Honest limitations
+## 6. The 1-billion-token target (honest arithmetic)
+
+Training tokens required scale with model size; for a ~50M-param model, ~1B
+tokens is a reasonable target. The bottleneck is throughput:
+
+| hardware | 50M-model throughput | time for 1B tokens |
+|---|---|---|
+| this sandbox (2 vCPU @ 2.6 GHz, AVX2) | ~525 tok/s (measured) | **~22 days** |
+| 1× A100 (bf16, flash-attn, batch 64) | ~1M tok/s (estimated) | **~17 minutes** |
+| 1× RTX 4090 (bf16) | ~200k tok/s (estimated) | ~1.4 hours |
+
+This environment is capped at 2 vCPU / 3.8 GB RAM with no AVX-512/bf16 hardware
+(measured: bf16 is *emulated* and slower, fp32 ~89 GFLOP/s). There is no
+"more compute" to unlock here — the ceiling is real. Therefore the long run in
+this repository trains *toward* 1B tokens with a live progress tracker and
+checkpoint/resume, and it will transparently report what fraction it reaches
+(e.g. ~12M tokens ≈ 1.2% per ~6-hour session).
+
+To actually finish 1B tokens, run the identical pipeline on a GPU:
+
+```bash
+# on a machine with an NVIDIA GPU
+pip install torch
+PYTHONPATH=src python -c "
+from zero.methods import fifty_m
+from zero.train import train
+cfg = fifty_m(2000)               # 2000 steps
+cfg.block_size = 1024             # long context on GPU
+cfg.batch_size = 64               # big batch -> high tok/s
+cfg.device = 'cuda'
+train(cfg)
+"
+```
+
+2000 steps × 65,536 tokens/step = 131M tokens; scale steps to 15,000 for ~1B.
+Nothing else in the pipeline changes — the corpus, tokenizer, FPFF core, and
+Z2G curriculum are identical; only the device differs.
+
+---
+
+## 7. Honest limitations
 
 * A 50M model needs ~billions of tokens to converge; this run shows the full
   pipeline and real learning (loss falls, generations improve) but is not a
