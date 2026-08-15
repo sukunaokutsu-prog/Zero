@@ -1,0 +1,17 @@
+==============================================================================
+Zero FPFF-Z2G run: fifty-m
+config: {"data_path": "data/corpus.txt", "toy_path": "data/toy.txt", "tokenizer": "bpe", "tokenizer_path": "data/mixed.tok.json", "ids_path": "data/mixed.ids.bin", "toy_ids_path": "data/toy.ids.bin", "block_size": 128, "split_ratio": 0.9, "n_layer": 8, "n_head": 8, "n_embd": 512, "dropout": 0.0, "bias": false, "growth": "net2net", "phase_b_step": 200, "phase_c_spawn": -1, "fpff": true, "fpff_loops": 6, "fpff_eps": 0.001, "fpff_sparsity": 0.6666666666666666, "fpff_seed": 42, "fpff_scale": 0.1, "fpff_lr": 0.001, "fpff_pop": 8, "fpff_hebb_interval": 10, "fpff_evo_interval": 50, "hash_engine": true, "hash_seed": 7, "hash_scale": 0.05, "lr": 0.003, "weight_decay": 0.1, "betas": [0.9, 0.95], "warmup_steps": 40, "min_lr": 0.0, "grad_clip": 1.0, "max_steps": 6000, "batch_size": 16, "eval_interval": 50, "eval_iters": 8, "log_interval": 5, "gen_interval": 50, "gen_max_tokens": 200, "gen_prompt": "CHAPTER I.", "seed": 1337, "target_tokens": 1000000000, "resume_from": "", "checkpoint_interval": 100, "name": "fifty-m", "out_dir": "results", "device": "cpu", "vocab_size": 2048}
+params: 26,297,344  (fpff core 512x512 = 262,144 floats persistent)
+vocab: 2048  toy_tokens: 402,703  real_tokens: 29,503,605
+Phase A (toy, 8 layers) -> step 200; Phase B (real, 16 layers) -> step 6000
+target: 1,000,000,000 tokens (progress tracked live)
+==============================================================================
+step     1/6000 | loss 7.6752 | lr 7.50e-05 | tok/s 1157 | tok 2,048/1,000,000,000 (0.0002%) | ETA 240.2h | t 2s | phase A
+[gen] step 1: wrote 200 tokens
+step     5/6000 | loss 6.4877 | lr 3.75e-04 | tok/s 708 | tok 10,240/1,000,000,000 (0.0010%) | ETA 392.3h | t 14s | phase A
+step    10/6000 | loss 5.8156 | lr 7.50e-04 | tok/s 927 | tok 20,480/1,000,000,000 (0.0020%) | ETA 299.8h | t 22s | phase A
+step    15/6000 | loss 5.4106 | lr 1.12e-03 | tok/s 1036 | tok 30,720/1,000,000,000 (0.0031%) | ETA 268.2h | t 30s | phase A
+step    20/6000 | loss 5.5705 | lr 1.50e-03 | tok/s 1100 | tok 40,960/1,000,000,000 (0.0041%) | ETA 252.5h | t 37s | phase A
+step    25/6000 | loss 5.3243 | lr 1.87e-03 | tok/s 1147 | tok 51,200/1,000,000,000 (0.0051%) | ETA 242.2h | t 45s | phase A
+step    30/6000 | loss 5.3001 | lr 2.25e-03 | tok/s 1179 | tok 61,440/1,000,000,000 (0.0061%) | ETA 235.5h | t 52s | phase A
+step    35/6000 | loss 5.2572 | lr 2.62e-03 | tok/s 1205 | tok 71,680/1,000,000,000 (0.0072%) | ETA 230.6h | t 60s | phase A
