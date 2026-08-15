@@ -1,0 +1,91 @@
+==============================================================================
+Zero FPFF-Z2G run: fifty-m
+config: {"data_path": "data/corpus.txt", "toy_path": "data/toy.txt", "tokenizer": "bpe", "tokenizer_path": "data/mixed.tok.json", "ids_path": "data/mixed.ids.bin", "toy_ids_path": "data/toy.ids.bin", "block_size": 128, "split_ratio": 0.9, "n_layer": 8, "n_head": 8, "n_embd": 512, "dropout": 0.0, "bias": false, "growth": "net2net", "phase_b_step": 100, "phase_c_spawn": -1, "fpff": true, "fpff_loops": 6, "fpff_eps": 0.001, "fpff_sparsity": 0.6666666666666666, "fpff_seed": 42, "fpff_scale": 0.1, "fpff_lr": 0.001, "fpff_pop": 8, "fpff_hebb_interval": 10, "fpff_evo_interval": 50, "hash_engine": true, "hash_seed": 7, "hash_scale": 0.05, "lr": 0.003, "weight_decay": 0.1, "betas": [0.9, 0.95], "warmup_steps": 40, "min_lr": 0.0, "grad_clip": 1.0, "max_steps": 300, "batch_size": 16, "eval_interval": 40, "eval_iters": 10, "log_interval": 5, "gen_interval": 50, "gen_max_tokens": 200, "gen_prompt": "CHAPTER I.", "seed": 1337, "name": "fifty-m", "out_dir": "results", "device": "cpu", "vocab_size": 2048}
+params: 26,297,344  (fpff core 512x512 = 262,144 floats persistent)
+vocab: 2048  toy_tokens: 405,442  real_tokens: 9,407,826
+Phase A (toy, 8 layers) -> step 100; Phase B (real, 16 layers) -> step 300
+==============================================================================
+step    1/300 | loss 7.6662 | lr 7.50e-05 | tok/s 988 | flops 3.23e+11 | t 2s | phase A
+[gen] step 1: wrote 200 tokens
+step    5/300 | loss 6.7754 | lr 3.75e-04 | tok/s 662 | flops 1.62e+12 | t 15s | phase A
+step   10/300 | loss 5.8251 | lr 7.50e-04 | tok/s 876 | flops 3.23e+12 | t 23s | phase A
+step   15/300 | loss 5.5605 | lr 1.12e-03 | tok/s 982 | flops 4.85e+12 | t 31s | phase A
+step   20/300 | loss 5.5764 | lr 1.50e-03 | tok/s 1051 | flops 6.46e+12 | t 39s | phase A
+step   25/300 | loss 5.3108 | lr 1.87e-03 | tok/s 1098 | flops 8.08e+12 | t 47s | phase A
+step   30/300 | loss 5.3143 | lr 2.25e-03 | tok/s 1129 | flops 9.69e+12 | t 54s | phase A
+step   35/300 | loss 5.0787 | lr 2.62e-03 | tok/s 1154 | flops 1.13e+13 | t 62s | phase A
+step   40/300 | loss 5.2445 | lr 3.00e-03 | tok/s 1172 | flops 1.29e+13 | t 70s | phase A
+[eval] step   40 | train 6.5589 | val 6.5672 | ppl 711.39
+step   45/300 | loss 5.1188 | lr 3.00e-03 | tok/s 1053 | flops 1.45e+13 | t 88s | phase A
+step   50/300 | loss 5.0084 | lr 2.99e-03 | tok/s 1073 | flops 1.62e+13 | t 95s | phase A
+[fpff] step 50: neuroevolution -> seed 42, goodness gap 0.0000
+[gen] step 50: wrote 200 tokens
+step   55/300 | loss 4.9723 | lr 2.98e-03 | tok/s 956 | flops 1.78e+13 | t 118s | phase A
+step   60/300 | loss 4.8523 | lr 2.96e-03 | tok/s 979 | flops 1.94e+13 | t 126s | phase A
+step   65/300 | loss 4.8152 | lr 2.94e-03 | tok/s 998 | flops 2.10e+13 | t 133s | phase A
+step   70/300 | loss 4.7497 | lr 2.91e-03 | tok/s 1015 | flops 2.26e+13 | t 141s | phase A
+step   75/300 | loss 4.7016 | lr 2.88e-03 | tok/s 1028 | flops 2.42e+13 | t 149s | phase A
+step   80/300 | loss 4.8942 | lr 2.84e-03 | tok/s 1041 | flops 2.59e+13 | t 157s | phase A
+[eval] step   80 | train 6.4458 | val 6.4394 | ppl 626.01
+step   85/300 | loss 4.6096 | lr 2.79e-03 | tok/s 991 | flops 2.75e+13 | t 176s | phase A
+step   90/300 | loss 4.5882 | lr 2.74e-03 | tok/s 1002 | flops 2.91e+13 | t 184s | phase A
+step   95/300 | loss 4.5214 | lr 2.69e-03 | tok/s 1012 | flops 3.07e+13 | t 192s | phase A
+[z2g] Phase B: depth doubled -> n_layer=16 params=51,479,552 | data switch toy -> real
+step  100/300 | loss 6.4336 | lr 2.63e-03 | tok/s 1012 | flops 3.26e+13 | t 202s | phase B
+[fpff] step 100: neuroevolution -> seed 42, goodness gap 0.0000
+[gen] step 100: wrote 200 tokens
+step  105/300 | loss 6.2106 | lr 2.57e-03 | tok/s 881 | flops 3.58e+13 | t 244s | phase B
+step  110/300 | loss 6.0144 | lr 2.51e-03 | tok/s 868 | flops 3.89e+13 | t 259s | phase B
+step  115/300 | loss 5.7793 | lr 2.44e-03 | tok/s 856 | flops 4.21e+13 | t 275s | phase B
+step  120/300 | loss 5.7197 | lr 2.37e-03 | tok/s 842 | flops 4.53e+13 | t 292s | phase B
+[eval] step  120 | train 5.6923 | val 5.7702 | ppl 320.61
+step  125/300 | loss 5.6629 | lr 2.29e-03 | tok/s 782 | flops 4.84e+13 | t 327s | phase B
+step  130/300 | loss 5.6738 | lr 2.21e-03 | tok/s 775 | flops 5.16e+13 | t 343s | phase B
+step  135/300 | loss 5.6663 | lr 2.13e-03 | tok/s 768 | flops 5.48e+13 | t 360s | phase B
+step  140/300 | loss 5.5393 | lr 2.05e-03 | tok/s 761 | flops 5.79e+13 | t 377s | phase B
+step  145/300 | loss 5.5595 | lr 1.96e-03 | tok/s 755 | flops 6.11e+13 | t 393s | phase B
+step  150/300 | loss 5.4521 | lr 1.88e-03 | tok/s 749 | flops 6.43e+13 | t 410s | phase B
+[fpff] step 150: neuroevolution -> seed 42, goodness gap 0.0000
+[gen] step 150: wrote 200 tokens
+step  155/300 | loss 5.4668 | lr 1.79e-03 | tok/s 698 | flops 6.74e+13 | t 455s | phase B
+step  160/300 | loss 5.3778 | lr 1.70e-03 | tok/s 694 | flops 7.06e+13 | t 472s | phase B
+[eval] step  160 | train 5.4271 | val 5.4973 | ppl 244.03
+step  165/300 | loss 5.3913 | lr 1.61e-03 | tok/s 664 | flops 7.37e+13 | t 509s | phase B
+step  170/300 | loss 5.4224 | lr 1.52e-03 | tok/s 661 | flops 7.69e+13 | t 526s | phase B
+step  175/300 | loss 5.3772 | lr 1.43e-03 | tok/s 659 | flops 8.01e+13 | t 544s | phase B
+step  180/300 | loss 5.2804 | lr 1.34e-03 | tok/s 656 | flops 8.32e+13 | t 562s | phase B
+step  185/300 | loss 5.3746 | lr 1.25e-03 | tok/s 653 | flops 8.64e+13 | t 580s | phase B
+step  190/300 | loss 5.2518 | lr 1.16e-03 | tok/s 650 | flops 8.96e+13 | t 598s | phase B
+step  195/300 | loss 5.3552 | lr 1.07e-03 | tok/s 647 | flops 9.27e+13 | t 617s | phase B
+step  200/300 | loss 5.3634 | lr 9.85e-04 | tok/s 645 | flops 9.59e+13 | t 635s | phase B
+[eval] step  200 | train 5.2948 | val 5.3331 | ppl 207.09
+[fpff] step 200: neuroevolution -> seed 42, goodness gap 0.0000
+[gen] step 200: wrote 200 tokens
+step  205/300 | loss 5.2990 | lr 9.01e-04 | tok/s 600 | flops 9.90e+13 | t 700s | phase B
+step  210/300 | loss 5.3152 | lr 8.19e-04 | tok/s 599 | flops 1.02e+14 | t 718s | phase B
+step  215/300 | loss 5.2904 | lr 7.40e-04 | tok/s 597 | flops 1.05e+14 | t 737s | phase B
+step  220/300 | loss 5.3365 | lr 6.63e-04 | tok/s 596 | flops 1.09e+14 | t 755s | phase B
+step  225/300 | loss 5.3168 | lr 5.89e-04 | tok/s 595 | flops 1.12e+14 | t 775s | phase B
+step  230/300 | loss 5.1485 | lr 5.19e-04 | tok/s 594 | flops 1.15e+14 | t 794s | phase B
+step  235/300 | loss 5.1591 | lr 4.52e-04 | tok/s 593 | flops 1.18e+14 | t 812s | phase B
+step  240/300 | loss 5.2735 | lr 3.89e-04 | tok/s 592 | flops 1.21e+14 | t 830s | phase B
+[eval] step  240 | train 5.2355 | val 5.2320 | ppl 187.17
+step  245/300 | loss 5.2164 | lr 3.30e-04 | tok/s 578 | flops 1.24e+14 | t 868s | phase B
+step  250/300 | loss 5.1934 | lr 2.76e-04 | tok/s 577 | flops 1.28e+14 | t 887s | phase B
+[fpff] step 250: neuroevolution -> seed 42, goodness gap 0.0000
+[gen] step 250: wrote 200 tokens
+step  255/300 | loss 5.1780 | lr 2.26e-04 | tok/s 560 | flops 1.31e+14 | t 933s | phase B
+step  260/300 | loss 5.1851 | lr 1.80e-04 | tok/s 559 | flops 1.34e+14 | t 952s | phase B
+step  265/300 | loss 5.1982 | lr 1.40e-04 | tok/s 559 | flops 1.37e+14 | t 970s | phase B
+step  270/300 | loss 5.1696 | lr 1.04e-04 | tok/s 559 | flops 1.40e+14 | t 989s | phase B
+step  275/300 | loss 5.3006 | lr 7.34e-05 | tok/s 559 | flops 1.43e+14 | t 1008s | phase B
+step  280/300 | loss 5.0924 | lr 4.80e-05 | tok/s 559 | flops 1.46e+14 | t 1026s | phase B
+[eval] step  280 | train 5.1725 | val 5.2026 | ppl 181.74
+step  285/300 | loss 5.2165 | lr 2.79e-05 | tok/s 549 | flops 1.50e+14 | t 1064s | phase B
+step  290/300 | loss 5.1966 | lr 1.32e-05 | tok/s 548 | flops 1.53e+14 | t 1083s | phase B
+step  295/300 | loss 5.1374 | lr 3.94e-06 | tok/s 548 | flops 1.56e+14 | t 1102s | phase B
+step  300/300 | loss 5.2330 | lr 1.09e-07 | tok/s 547 | flops 1.59e+14 | t 1123s | phase B
+[eval] step  300 | train 5.1631 | val 5.2431 | ppl 189.25
+[fpff] step 300: neuroevolution -> seed 42, goodness gap 0.0000
+[gen] step 300: wrote 200 tokens
+[done] val 5.2434 | ppl 189.32 | 1170s | 525 tok/s

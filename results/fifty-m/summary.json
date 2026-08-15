@@ -1,0 +1,89 @@
+{
+  "name": "fifty-m",
+  "final_train_loss": 5.18934,
+  "final_val_loss": 5.24342,
+  "best_val_loss": 5.20256,
+  "val_perplexity": 189.316,
+  "bits_per_char": 7.56465,
+  "steps": 300,
+  "n_layer_final": 16,
+  "n_params": 51479552,
+  "n_params_phaseA": 25739776,
+  "total_train_flops": 159139762274304.0,
+  "total_seconds": 1169.5,
+  "tokens_per_sec": 525.3,
+  "history": [
+    {
+      "step": 40,
+      "train_loss": 6.5589189529418945,
+      "val_loss": 6.567216396331787,
+      "val_ppl": 711.3868654131749,
+      "total_flops": 12925670522880.0,
+      "n_params": 26297344,
+      "n_layer": 8
+    },
+    {
+      "step": 80,
+      "train_loss": 6.445799827575684,
+      "val_loss": 6.439361572265625,
+      "val_ppl": 626.0070119688907,
+      "total_flops": 25851341045760.0,
+      "n_params": 26297344,
+      "n_layer": 8
+    },
+    {
+      "step": 120,
+      "train_loss": 5.692286968231201,
+      "val_loss": 5.770229339599609,
+      "val_ppl": 320.6112530728717,
+      "total_flops": 45275229978624.0,
+      "n_params": 51479552,
+      "n_layer": 16
+    },
+    {
+      "step": 160,
+      "train_loss": 5.42714786529541,
+      "val_loss": 5.497279644012451,
+      "val_ppl": 244.02718768207706,
+      "total_flops": 70578459377664.0,
+      "n_params": 51479552,
+      "n_layer": 16
+    },
+    {
+      "step": 200,
+      "train_loss": 5.294845104217529,
+      "val_loss": 5.3331379890441895,
+      "val_ppl": 207.0867917163054,
+      "total_flops": 95881688776704.0,
+      "n_params": 51479552,
+      "n_layer": 16
+    },
+    {
+      "step": 240,
+      "train_loss": 5.235455513000488,
+      "val_loss": 5.232040882110596,
+      "val_ppl": 187.1744148907128,
+      "total_flops": 121184918175744.0,
+      "n_params": 51479552,
+      "n_layer": 16
+    },
+    {
+      "step": 280,
+      "train_loss": 5.172457695007324,
+      "val_loss": 5.202559947967529,
+      "val_ppl": 181.7368838582129,
+      "total_flops": 146488147574784.0,
+      "n_params": 51479552,
+      "n_layer": 16
+    },
+    {
+      "step": 300,
+      "train_loss": 5.163094520568848,
+      "val_loss": 5.243068218231201,
+      "val_ppl": 189.24987242919994,
+      "total_flops": 159139762274304.0,
+      "n_params": 51479552,
+      "n_layer": 16
+    }
+  ]
+}
